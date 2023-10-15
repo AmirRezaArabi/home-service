@@ -1,4 +1,4 @@
-package damain;
+package domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UnderService {
+public class SubService {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id ;
@@ -22,10 +22,10 @@ public class UnderService {
     @ManyToOne(cascade = CascadeType.ALL)
     private Service service;
 
-    @ManyToMany(mappedBy = "underServices")
+    @ManyToMany(mappedBy = "subServices")
     private List<Expert> expert;
 
-    private String describtion ;
+    private String description;
 
-    private Long baseprice ;
+    private Long basePrice;
 }

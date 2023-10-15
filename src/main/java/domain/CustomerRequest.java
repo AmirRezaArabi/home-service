@@ -1,12 +1,13 @@
-package damain;
+package domain;
 
+import domain.enums.REQUEST_STATUS;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.domain.enums.REQUEST_STATUS;
+
 
 import java.time.LocalDate;
 
@@ -27,7 +28,7 @@ public class CustomerRequest {
     private Service service;
     @NotNull
     @OneToOne
-    private UnderService underService;
+    private SubService subService;
 
     private Long suggestionPrice ;
 

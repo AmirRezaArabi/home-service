@@ -1,4 +1,4 @@
-package damain;
+package domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -20,7 +20,7 @@ public class Order {
     private Service service;
     @NotNull
     @OneToOne
-    private UnderService underService ;
+    private SubService subService ;
     @NotNull
     @ManyToOne
     private Customer customer ;

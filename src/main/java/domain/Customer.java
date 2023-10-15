@@ -1,15 +1,14 @@
-package damain;
+package domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import domain.base.User;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.domain.base.User;
+
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -18,9 +17,10 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Customer extends User {
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Wallet wallet;
 
     @OneToMany(mappedBy = "customer")

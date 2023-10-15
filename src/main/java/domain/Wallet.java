@@ -1,14 +1,19 @@
-package damain;
+package domain;
 
 
+import domain.base.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Wallet {
 
     @Id
@@ -18,8 +23,8 @@ public class Wallet {
     @NotNull
     private Long Balance;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Customer customer;
+    @OneToOne
+    private User user;
 
 
 }

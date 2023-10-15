@@ -1,4 +1,4 @@
-package damain;
+package domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -23,7 +23,6 @@ public class Service {
     @Column(unique = true)
     private String name ;
     @OneToMany(mappedBy = "service" )
-    private List<UnderService> underServices = new ArrayList<>() ;
+    private List<SubService> subServices = new ArrayList<>() ;
 }
-
 

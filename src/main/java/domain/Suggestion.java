@@ -1,4 +1,4 @@
-package damain;
+package domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
