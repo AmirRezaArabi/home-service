@@ -1,4 +1,4 @@
-package damain.enums;
+package domain.enums;
 
 public enum EXPERT_STATUS {
     CONFIRMED,

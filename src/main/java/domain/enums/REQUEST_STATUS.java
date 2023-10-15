@@ -1,4 +1,4 @@
-package damain.enums;
+package domain.enums;
 
 public enum REQUEST_STATUS {
     WAITING_FOR_SUGGESTION,
