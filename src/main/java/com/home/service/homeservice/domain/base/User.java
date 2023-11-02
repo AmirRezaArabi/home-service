@@ -28,12 +28,11 @@ public abstract class User {
     @Size(min = 8,max = 8,message = "the password length should 8 char")
     @Pattern(regexp = "^(?=.+\\d)(?=.+[a-zA-Z]).{8}$")
     private String password;
-    @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
     @Column(unique = true)
     @NotNull
     private String emailAddress;
     private LocalDate registerDate;
-    @OneToOne(cascade = {CascadeType.MERGE,CascadeType.REMOVE})
+    @OneToOne(cascade = {CascadeType.ALL})
     private Wallet wallet;
 
 

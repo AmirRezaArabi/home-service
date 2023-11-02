@@ -24,7 +24,7 @@ public class CustomerRequest {
     @ManyToOne
     private Customer customer;
     @NotNull
-    @OneToOne
+    @ManyToOne
     private SubService subService;
 
     private Long suggestionPrice ;

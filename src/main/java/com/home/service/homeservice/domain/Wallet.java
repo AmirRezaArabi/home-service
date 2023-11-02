@@ -23,7 +23,7 @@ public class Wallet {
     @NotNull
     private Long Balance;
 
-    @OneToOne(cascade = {CascadeType.MERGE,CascadeType.REMOVE})
+    @OneToOne(cascade = CascadeType.ALL)
     private User user;
 
 

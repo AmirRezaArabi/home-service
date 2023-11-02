@@ -22,7 +22,7 @@ public class Service {
     @NotNull
     @Column(unique = true)
     private String name ;
-    @OneToMany(mappedBy = "service" )
+    @OneToMany(mappedBy = "service",cascade = CascadeType.ALL)
     private List<SubService> subServices = new ArrayList<>() ;
 }
 

@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #eee
+        }
+
+        .card {
+            width: 340px;
+            border-radius: 35px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
+        }
+
+        .total-amount {
+            font-size: 22px;
+            font-weight: 700;
+            color: #383737
+        }
+
+        .amount-container {
+            background-color: #e9eaeb;
+            padding: 6px;
+            padding-left: 15px;
+            padding-right: 15px;
+            border-radius: 8px
+        }
+
+        .amount-text {
+            font-size: 20px;
+            font-weight: 700;
+            color: #673AB7
+        }
+
+        .dollar-sign {
+            font-size: 20px;
+            font-weight: 700;
+            color: #000
+        }
+
+        .label-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #b2b2b2
+        }
+
+        .credit-card-number {
+            width: 290px;
+            z-index: 28;
+            border: 2px solid #ced4da;
+            border-radius: 6px;
+            font-weight: 600
+        }
+
+        .credit-card-number:focus {
+            box-shadow: none;
+            border: 2px solid #673AB7
+        }
+
+        .visa-icon {
+            position: relative;
+            top: 42px;
+            right: 14px;
+            z-index: 30
+        }
+
+        .expiry-class {
+            width: 120px;
+            border: 2px solid #ced4da;
+            font-weight: 600;
+            font-size: 12px;
+            height: 48px
+        }
+
+        .expiry-class:focus {
+            box-shadow: none;
+            border: 2px solid #673AB7
+        }
+
+        .cvv-class {
+            width: 120px;
+            border: 2px solid #ced4da;
+            font-weight: 600;
+            font-size: 12px;
+            height: 48px
+        }
+
+        .cvv-class:focus {
+            box-shadow: none;
+            border: 2px solid #673AB7
+        }
+
+        .payment-btn {
+            background-color: #673AB7;
+            padding: 15px;
+            padding-left: 25px;
+            padding-right: 25px;
+            color: #fff;
+            font-weight: 600;
+            border-radius: 12px
+        }
+
+        .payment-btn:hover {
+            box-shadow: none;
+            color: #000;
+            background-color: #b7eaff;
+        }
+
+        .cancel-btn {
+            background-color: #fff;
+            color: #b2b2b2;
+            padding: 0px;
+            padding-top: 3px;
+            padding-bottom: 3px;
+            font-weight: 600;
+            border-radius: 6px
+        }
+
+        .cancel-btn:hover {
+            border: 2px solid #b2b2b2;
+            color: #b2b2b2
+        }
+
+        .cancel-btn:focus {
+            box-shadow: none
+        }
+
+        .label-text-cc-number {
+            position: relative;
+            top: 4px
+        }
+    </style>
+</head>
+<body>
+<main>
+    <div class="container mt-5 d-flex justify-content-center">
+        <div class="card p-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="total-amount">Total amount</h5>
+                <div class="amount-container">
+                            <span class="amount-text">
+                                <span class="dollar-sign">$</span>375
+                            </span>
+                </div>
+            </div>
+            <div class="pt-4">
+                <label class="d-flex justify-content-between pb-1">
+                    <span class="label-text label-text-cc-number">CARD NUMBER</span>
+                </label>
+                <input type="tel" name="credit-number" class="form-control credit-card-number" maxlength="16"
+                       placeholder="Card number" id="cardNumber">
+            </div>
+            <div class="d-flex justify-content-center pt-4">
+                <div>
+                    <label><span class="label-text">CVV</span></label>
+                    <input type="tel" id="cvv" name="cvv-number" class="form-control cvv-class" maxlength="4"
+                           pattern="\d*">
+                </div>
+            </div>
+            <div class="d-flex justify-content-center pt-5 align-items-center">
+                <button type="button" class="btn payment-btn">Make Payment</button>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script>
+    $("button").click(function() {
+
+        let form = new FormData();
+
+        let creditCard = $("#cardNumber").val() ;
+
+        form.append("creditCardNumber" , creditCard);
+
+        form.append("cvv2" , $("#cvv").val());
+
+        $.ajax({
+
+            url: "http://localhost:9999/customer/pay/online" ,
+
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+
+            contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+
+            data: {
+                "creditCardNumber": $("#cardNumber").val(),
+                "cvv2": $("#cvv").val()
+            },
+
+            type: "POST",
+
+            success: function (msg) {
+
+                alert("successful")
+
+            }, error: function (request) {
+
+            }
+
+        });
+        console.log("hello")
+    });
+</script>
+</body>
+</html>

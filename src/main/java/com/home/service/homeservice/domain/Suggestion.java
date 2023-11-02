@@ -18,10 +18,10 @@ public class Suggestion {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id ;
 
-    @OneToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.ALL)
     private CustomerRequest customerRequest ;
 
-    @OneToOne
+    @ManyToOne
     private Expert expert;
 
     private Long suggestionPrice ;

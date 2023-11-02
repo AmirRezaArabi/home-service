@@ -19,7 +19,7 @@ public class SubService {
     private Long id ;
     @Column(unique = true)
     private String name ;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Service service;
 
     @ManyToMany(mappedBy = "subServices")

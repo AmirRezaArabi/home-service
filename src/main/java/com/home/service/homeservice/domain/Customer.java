@@ -20,10 +20,10 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Customer extends User {
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL,mappedBy = "user")
     private Wallet wallet;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer", cascade =  {CascadeType.DETACH, CascadeType.REFRESH,CascadeType.REMOVE})
     private List<CustomerRequest> customerRequests = new ArrayList<>();
     @OneToMany(mappedBy = "customer")
     private List<Order> orders = new ArrayList<>();
