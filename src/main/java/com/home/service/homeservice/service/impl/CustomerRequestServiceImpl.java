@@ -17,15 +17,20 @@ public class CustomerRequestServiceImpl implements CustomerRequestService {
     private final CustomerRequestRepository customerRequestRepository;
     @Override
     public CustomerRequest saveOrUpdate(CustomerRequest customerRequest) {
-        if (!isValid(customerRequest))
-            return null;
         return customerRequestRepository.save(customerRequest);
     }
 
     @Override
     public String delete(CustomerRequest customerRequest) {
         customerRequestRepository.delete(customerRequest);
-        return customerRequest.getCustomer().getUserName();
+        try {
+            return customerRequest.getCustomer().getUserName();
+        }
+        catch (Exception e)
+        {
+            return "DELETED BUT CUSTOMER REQUEST DONT HAVE ANY CUSTOMER";
+        }
+
     }
 
     @Override

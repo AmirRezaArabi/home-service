@@ -11,6 +11,7 @@ public interface ServiceService {
     Service saveOrUpdate(Service service);
 
     String delete(Service service);
+    void deleteById(Long id);
 
     Optional<Service> findById(Long id);
     Optional<Service> findByName (String name);

@@ -1,20 +1,31 @@
 package com.home.service.homeservice.service;
 
-import org.springframework.stereotype.Service;
 
-@Service
+import com.home.service.homeservice.domain.Customer;
+import com.home.service.homeservice.domain.Expert;
+import com.home.service.homeservice.domain.Service;
+import com.home.service.homeservice.domain.SubService;
+import com.home.service.homeservice.domain.base.User;
+import com.home.service.homeservice.dto.response.CustomerResponseDTO;
+import com.home.service.homeservice.utility.CustomerFilter;
+import com.home.service.homeservice.utility.ExpertFilter;
+
+import java.util.List;
+
+@org.springframework.stereotype.Service
 public interface AdminAccessService {
 
-    boolean addService(String serviceName) ;
+    Service addService(String serviceName) ;
 
-    boolean addSubService(String serviceName, String subServiceName, String description, Long basePrice );
+    SubService addSubService(String serviceName, String subServiceName, String description, Long basePrice );
 
-    boolean updatePriceOrDescription(String subServiceName, String description, Long basePrice);
+    SubService updatePriceOrDescription(String subServiceName, String description, Long basePrice);
 
-    boolean addExpertToSystem(String expertUserName,String subService);
+    Expert addExpertToSystem(String expertUserName, String subService);
 
-    boolean removeExpertToSystem(String expertUserName,String subService);
+    Expert removeExpertToSystem(String expertUserName,String subService);
 
-    boolean confirmExpert(String expertUserName);
+    Expert confirmExpert(String expertUserName);
 
+    List<User> searchFromCustomer(ExpertFilter expertFilter);
 }

@@ -1,6 +1,7 @@
 package com.home.service.homeservice.service.impl;
 
 import com.home.service.homeservice.domain.*;
+import com.home.service.homeservice.domain.enums.EXPERT_STATUS;
 import com.home.service.homeservice.domain.enums.REQUEST_STATUS;
 import com.home.service.homeservice.exception.IdIsNotExist;
 import com.home.service.homeservice.exception.TheInputTimeIsNotValid;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -24,7 +26,7 @@ public class CustomerAccessServiceImpl implements CustomerAccessService {
     private final SuggestionService suggestionService;
 
     @Override
-    public boolean placeAnRequest(Long subServiceId, String customerUserName, LocalDate time
+    public CustomerRequest placeAnRequest(Long subServiceId, String customerUserName, LocalDate time
             , Long suggestionPrice, String description, String address) {
 
         Customer customer = customerService.findByUserName(customerUserName).get();
@@ -37,11 +39,12 @@ public class CustomerAccessServiceImpl implements CustomerAccessService {
                 .customer(customer).startDay(time).suggestionPrice(suggestionPrice)
                 .description(description).address(address).request_status(REQUEST_STATUS.WAITING_FOR_SUGGESTION)
                 .build();
-        return customerRequestService.saveOrUpdate(customerRequest) != null;
+        return customerRequestService.saveOrUpdate(customerRequest);
     }
 
     @Override
     public boolean setScoreByCustomer(Long orderId, int score) {
+        if (score > 5) throw new IllegalArgumentException("input score must between 1 to 5");
         if (orderService.findById(orderId).isEmpty())
             throw new IdIsNotExist("id is not exist");
         Order order = orderService.findById(orderId).get();
@@ -76,7 +79,7 @@ public class CustomerAccessServiceImpl implements CustomerAccessService {
     }
 
     @Override
-    public boolean chooseSuggestion(Long suggestionId) {
+    public Order chooseSuggestion(Long suggestionId) {
         if (suggestionService.findById(suggestionId).isEmpty())
             throw new IdIsNotExist("id is not exist");
         Suggestion suggestion = suggestionService.findById(suggestionId).get();
@@ -90,29 +93,36 @@ public class CustomerAccessServiceImpl implements CustomerAccessService {
                 .description(customerRequest.getDescription())
                 .startDay(suggestion.getStartWorkDay())
                 .duration(suggestion.getDuration()).build();
-        boolean isUpdate = customerRequestService.saveOrUpdate(customerRequest) != null;
-        boolean isSave = orderService.saveOrUpdate(order) != null;
-        return (isUpdate && isSave);
+        customerRequestService.saveOrUpdate(customerRequest);
+        return orderService.saveOrUpdate(order);
     }
 
     @Override
-    public boolean changeRequestStatusToStarted(Long orderId) {
+    public Order changeRequestStatusToStarted(Long orderId) {
         if (orderService.findById(orderId).isEmpty())
             throw new IdIsNotExist("id is not exist");
         Order order = orderService.findById(orderId).get();
-        if (LocalDate.now().isBefore(order.getStartDay()))
+        //todo : check
+        if (LocalDate.now().isAfter(order.getStartDay()))
             throw new TheInputTimeIsNotValid("the input time is before start work day");
         order.setRequest_status(REQUEST_STATUS.STARTED);
-        return orderService.saveOrUpdate(order) != null;
+        return orderService.saveOrUpdate(order);
     }
 
     @Override
-    public boolean changeRequestStatusToDone(Long orderId) {
+    public Order
+    changeRequestStatusToDone(Long orderId) {
         if (orderService.findById(orderId).isEmpty())
             throw new IdIsNotExist("id is not exist");
         Order order = orderService.findById(orderId).get();
+        Expert expert = order.getExpert();
         order.setRequest_status(REQUEST_STATUS.DONE);
-        return orderService.saveOrUpdate(order) != null;
+        int minesScore = Period.between(order.getStartDay().plusDays(order.getDuration()), LocalDate.now()).getDays();
+        expert.setScore(expert.getScore() - minesScore);
+        if (expert.getScore() < 0)
+            expert.setExpert_status(EXPERT_STATUS.DEACTIVATE);
+        expertService.saveOrUpdate(expert);
+        return orderService.saveOrUpdate(order);
     }
 
 

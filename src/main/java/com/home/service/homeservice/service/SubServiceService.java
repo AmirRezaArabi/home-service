@@ -12,6 +12,7 @@ public interface SubServiceService {
     SubService saveOrUpdate(SubService subService);
 
     String delete(SubService subService);
+    void deleteById(Long id );
 
     Optional<SubService> findById(Long id);
     Optional<SubService> findByName(String name);

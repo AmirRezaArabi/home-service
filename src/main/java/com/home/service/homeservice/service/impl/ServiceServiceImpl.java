@@ -28,6 +28,11 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
+    public void deleteById(Long id) {
+         serviceRepository.deleteById(id);
+    }
+
+    @Override
     public Optional<Service> findById(Long id) {
         return serviceRepository.findById(id);
     }

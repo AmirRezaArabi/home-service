@@ -1,5 +1,7 @@
 package com.home.service.homeservice.service;
 
+import com.home.service.homeservice.domain.CustomerRequest;
+import com.home.service.homeservice.domain.Order;
 import com.home.service.homeservice.domain.Suggestion;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +11,7 @@ import java.util.List;
 @Service
 public interface CustomerAccessService {
 
-    boolean placeAnRequest(Long subServiceId, String customerUserName, LocalDate time, Long suggestionPrice, String description, String address);
+    CustomerRequest placeAnRequest(Long subServiceId, String customerUserName, LocalDate time, Long suggestionPrice, String description, String address);
 
     boolean setScoreByCustomer(Long orderId, int score);
 
@@ -18,10 +20,10 @@ public interface CustomerAccessService {
     List<Suggestion> showSuggestion(Long customerRequestId);
 
 
-    boolean chooseSuggestion(Long suggestionId);
+    Order chooseSuggestion(Long suggestionId);
 
-    boolean changeRequestStatusToStarted(Long orderId);
+    Order changeRequestStatusToStarted(Long orderId);
 
 
-    boolean changeRequestStatusToDone(Long orderId);
+    Order changeRequestStatusToDone(Long orderId);
 }

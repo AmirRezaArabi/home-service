@@ -29,7 +29,7 @@ public class SuggestionServiceImpl implements SuggestionService {
     @Override
     public String delete(Suggestion suggestion) {
         suggestionRepository.delete(suggestion);
-        return suggestion.getCustomerRequest().getCustomer().getUserName();
+        return suggestion.getExpert().getUserName();
     }
 
     @Override

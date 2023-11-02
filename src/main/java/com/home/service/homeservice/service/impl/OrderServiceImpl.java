@@ -27,7 +27,13 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public String delete(Order order) {
         orderRepository.delete(order);
-        return order.getCustomer().getUserName();
+        try {
+            return order.getCustomer().toString();
+        }
+        catch (Exception e)
+        {
+            return "deleted";
+        }
     }
 
     @Override

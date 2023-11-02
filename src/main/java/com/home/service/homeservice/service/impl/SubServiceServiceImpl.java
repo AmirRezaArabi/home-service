@@ -33,6 +33,11 @@ public class SubServiceServiceImpl implements SubServiceService {
     }
 
     @Override
+    public void deleteById(Long id) {
+        subServiceRepository.deleteById(id);
+    }
+
+    @Override
     public Optional<SubService> findById(Long id) {
         return subServiceRepository.findById(id);
     }
