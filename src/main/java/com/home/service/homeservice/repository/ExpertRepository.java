@@ -15,10 +15,12 @@ import java.util.Optional;
 public interface ExpertRepository extends JpaRepository<Expert,Long> {
 
 
-    Optional<Expert> findByUserName(String userName);
+    Optional<Expert> findByUsername(String username);
 
     List<Expert> findAll(@Nullable Specification<Expert> spec);
     //todo: save and update picture
+
+    Optional<Expert> findByEmailAddress(String emailAddress);
 
 
 
