@@ -1,14 +1,11 @@
 package com.home.service.homeservice.service;
 
 
-import com.home.service.homeservice.domain.Customer;
 import com.home.service.homeservice.domain.Expert;
 import com.home.service.homeservice.domain.Service;
 import com.home.service.homeservice.domain.SubService;
 import com.home.service.homeservice.domain.base.User;
-import com.home.service.homeservice.dto.response.CustomerResponseDTO;
-import com.home.service.homeservice.utility.CustomerFilter;
-import com.home.service.homeservice.utility.ExpertFilter;
+import com.home.service.homeservice.filter.ExpertFilter;
 
 import java.util.List;
 

@@ -1,10 +1,13 @@
 package com.home.service.homeservice.service;
 
 import com.home.service.homeservice.domain.Order;
+import com.home.service.homeservice.domain.enums.REQUEST_STATUS;
+import com.home.service.homeservice.dto.request.OrderFilterReqDTO;
+import com.home.service.homeservice.filter.OrderFilter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 @Service
 public interface OrderService {
 
@@ -13,7 +16,16 @@ public interface OrderService {
 
     String delete(Order order);
 
-    Optional<Order> findById(Long id);
+    Order findById(Long id);
 
     List<Order> findAll();
+
+    List<Order> searchFromOrders(OrderFilterReqDTO orderFilterReqDTO);
+
+    List<Order> findAllByRequest_status(REQUEST_STATUS request_status);
+
+    List<Order> findOrdersForPay();
+
+    List<Order> findAllByExpertUsername(String username);
+
 }

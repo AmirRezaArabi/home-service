@@ -2,14 +2,11 @@ package com.home.service.homeservice.service;
 
 
 import com.home.service.homeservice.domain.Customer;
-import com.home.service.homeservice.domain.Expert;
-import com.home.service.homeservice.dto.response.CustomerResponseDTO;
-import com.home.service.homeservice.utility.CustomerFilter;
-import com.home.service.homeservice.utility.ExpertFilter;
+import com.home.service.homeservice.filter.ExpertFilter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 @Service
 public interface CustomerService {
 
@@ -17,15 +14,18 @@ public interface CustomerService {
 
     String delete (Customer customer);
     void deleteById(Long id);
-    Optional<Customer> findById (Long id);
-    Optional<Customer> findByUserName (String userName);
+    Customer findById (Long id);
+    Customer findByUsername(String username);
 
-    Optional<Customer> changePassword(String oldPassword, String userName, String newPassword );
+    Customer changePassword(String oldPassword, String userName, String newPassword );
 
     List<Customer> findAll();
     Customer signIn(String userName,String password) ;
     Customer signUp(Customer customer);
     List<Customer> searchFromCustomer(ExpertFilter expertFilter);
+
+    Customer findByEmailAddress(String emailAddress);
+
 
 
 

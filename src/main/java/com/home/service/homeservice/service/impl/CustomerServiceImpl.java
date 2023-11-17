@@ -2,26 +2,32 @@ package com.home.service.homeservice.service.impl;
 
 import com.home.service.homeservice.domain.Customer;
 import com.home.service.homeservice.domain.Wallet;
+import com.home.service.homeservice.domain.enums.Role;
+import com.home.service.homeservice.exception.IdIsNotExist;
+import com.home.service.homeservice.exception.TheEmailNotFoundException;
 import com.home.service.homeservice.exception.TheInputInformationIsNotValidException;
 import com.home.service.homeservice.exception.UserNameOrPasswordDosNotExistException;
 import com.home.service.homeservice.repository.CustomerRepository;
 import com.home.service.homeservice.service.CustomerService;
 import com.home.service.homeservice.service.WalletService;
 import com.home.service.homeservice.utility.CustomerSpec;
-import com.home.service.homeservice.utility.ExpertFilter;
+import com.home.service.homeservice.filter.ExpertFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.util.Streamable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
 
 public class CustomerServiceImpl implements CustomerService {
+
+    private final BCryptPasswordEncoder passwordEncoder;
     private final CustomerRepository customerRepository;
 
     private final WalletService walletService;
@@ -35,7 +41,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public String delete(Customer customer) {
          customerRepository.delete(customer);
-        return customer.getUserName();
+        return customer.getUsername();
     }
 
     @Override
@@ -45,23 +51,21 @@ public class CustomerServiceImpl implements CustomerService {
 
 
     @Override
-    public Optional<Customer> findById(Long id) {
-        return customerRepository.findById(id);
+    public Customer findById(Long id) {
+        return customerRepository.findById(id).orElseThrow(()->new IdIsNotExist("the id not found"));
     }
 
     @Override
-    public Optional<Customer> findByUserName(String userName) {
-        return customerRepository.findByUserName(userName);
+    public Customer findByUsername(String username) {
+        return customerRepository.findByUsername(username).orElseThrow(()->new UsernameNotFoundException("the username not found "));
     }
 
     @Override
-    public Optional<Customer> changePassword(String oldPassword, String userName, String newPassword) {
-        Optional<Customer> byUserName = customerRepository.findByUserName(userName);
-        if (byUserName.isEmpty() || !byUserName.get().getPassword().equals(oldPassword))
-            throw new TheInputInformationIsNotValidException("The Input Information Is Not Valid ");
-        Customer customer = byUserName.get();
+    public Customer changePassword(String oldPassword, String userName, String newPassword) {
+        Customer customer =  findByUsername(userName);
+        if (!customer.getPassword().equals(oldPassword)) throw new TheInputInformationIsNotValidException("The Input Information Is Not Valid ");
         customer.setPassword(newPassword);
-        return Optional.of(customerRepository.save(customer));
+        return customerRepository.save(customer);
     }
 
     @Override
@@ -71,18 +75,21 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer signIn(String userName, String password) {
-        Optional<Customer> byUserName = customerRepository.findByUserName(userName);
-        if (byUserName.isEmpty()||!byUserName.get().getPassword().equals(password))
-            throw new UserNameOrPasswordDosNotExistException("UserName Or Password Dos Not Exist");
-        return byUserName.get();
+        Customer customer = findByUsername(userName);
+        if (!passwordEncoder.matches(password,customer.getPassword()))
+            throw new UserNameOrPasswordDosNotExistException("the input Password Not correct");
+        return customer;
     }
 
 
     @Override
     public Customer signUp(Customer customer) {
         Wallet build = Wallet.builder().user(customer).Balance(0L).build();
+        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
+        customer.setRole(Role.ROLE_CUSTOMER);
         customer.setWallet(build);
         customer.setRegisterDate(LocalDate.now());
+        customer.setIsEnabled(false);
         walletService.saveOrUpdate(build);
         return customerRepository.save(customer);
     }
@@ -93,7 +100,10 @@ public class CustomerServiceImpl implements CustomerService {
        return customerRepository.findAll(spec);
     }
 
-
+    @Override
+    public Customer findByEmailAddress(String emailAddress) {
+        return customerRepository.findByEmailAddress(emailAddress).orElseThrow(()->new TheEmailNotFoundException("email address not found"));
+    }
 
 
 }

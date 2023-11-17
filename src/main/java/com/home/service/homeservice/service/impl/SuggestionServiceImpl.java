@@ -1,16 +1,14 @@
 package com.home.service.homeservice.service.impl;
 
+import com.home.service.homeservice.domain.CustomerRequest;
 import com.home.service.homeservice.domain.Suggestion;
+import com.home.service.homeservice.exception.IdIsNotExist;
 import lombok.RequiredArgsConstructor;
 import com.home.service.homeservice.repository.SuggestionRepository;
 import com.home.service.homeservice.service.SuggestionService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-
-import static com.home.service.homeservice.validation.EntityValidator.isValid;
-
 @RequiredArgsConstructor
 @Service
 
@@ -20,8 +18,6 @@ public class SuggestionServiceImpl implements SuggestionService {
 
     @Override
     public Suggestion saveOrUpdate(Suggestion suggestion) {
-        if (!isValid(suggestion))
-            return null;
         return suggestionRepository.save(suggestion);
     }
 
@@ -29,16 +25,21 @@ public class SuggestionServiceImpl implements SuggestionService {
     @Override
     public String delete(Suggestion suggestion) {
         suggestionRepository.delete(suggestion);
-        return suggestion.getExpert().getUserName();
+        return suggestion.getExpert().getUsername();
     }
 
     @Override
-    public Optional<Suggestion> findById(Long id) {
-        return suggestionRepository.findById(id);
+    public Suggestion findById(Long id) {
+        return suggestionRepository.findById(id).orElseThrow(()->new IdIsNotExist("the id is not found"));
     }
 
     @Override
     public List<Suggestion> findAll() {
         return suggestionRepository.findAll();
+    }
+
+    @Override
+    public List<Suggestion> findAllByCustomerRequestOrderBySuggestionPriceAsc(CustomerRequest customerRequest) {
+        return suggestionRepository.findAllByCustomerRequestOrderBySuggestionPriceAsc(customerRequest);
     }
 }

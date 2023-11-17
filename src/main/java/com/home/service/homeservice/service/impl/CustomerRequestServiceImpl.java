@@ -1,15 +1,14 @@
 package com.home.service.homeservice.service.impl;
 
 import com.home.service.homeservice.domain.CustomerRequest;
+import com.home.service.homeservice.domain.enums.REQUEST_STATUS;
+import com.home.service.homeservice.exception.IdIsNotExist;
 import lombok.RequiredArgsConstructor;
 import com.home.service.homeservice.repository.CustomerRequestRepository;
 import com.home.service.homeservice.service.CustomerRequestService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-
-import static com.home.service.homeservice.validation.EntityValidator.isValid;
 @RequiredArgsConstructor
 @Service
 
@@ -24,7 +23,7 @@ public class CustomerRequestServiceImpl implements CustomerRequestService {
     public String delete(CustomerRequest customerRequest) {
         customerRequestRepository.delete(customerRequest);
         try {
-            return customerRequest.getCustomer().getUserName();
+            return customerRequest.getCustomer().getUsername();
         }
         catch (Exception e)
         {
@@ -34,12 +33,17 @@ public class CustomerRequestServiceImpl implements CustomerRequestService {
     }
 
     @Override
-    public Optional<CustomerRequest> findById(Long id) {
-        return customerRequestRepository.findById(id);
+    public CustomerRequest findById(Long id) {
+        return customerRequestRepository.findById(id).orElseThrow(()->new IdIsNotExist("the id not found"));
     }
 
     @Override
     public List<CustomerRequest> findAll() {
         return customerRequestRepository.findAll();
+    }
+
+    @Override
+    public List<CustomerRequest> findAllByRequest_status(REQUEST_STATUS request_status){
+        return customerRequestRepository.findAllByStatus(request_status);
     }
 }

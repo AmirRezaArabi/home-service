@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface WalletService {
     Wallet saveOrUpdate(Wallet wallet);
     String delete(Wallet wallet);
-    Optional<Wallet> findById(Long id);
+    Wallet findById(Long id);
     List<Wallet> findAll();
 
 

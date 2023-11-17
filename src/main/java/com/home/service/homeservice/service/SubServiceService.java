@@ -5,7 +5,7 @@ import com.home.service.homeservice.domain.Service;
 import com.home.service.homeservice.domain.SubService;
 
 import java.util.List;
-import java.util.Optional;
+
 @org.springframework.stereotype.Service
 public interface SubServiceService {
 
@@ -14,10 +14,10 @@ public interface SubServiceService {
     String delete(SubService subService);
     void deleteById(Long id );
 
-    Optional<SubService> findById(Long id);
-    Optional<SubService> findByName(String name);
+    SubService findById(Long id);
+    SubService findByName(String name);
 
     List<SubService> findAll();
-    Optional<Service> findServiceBuSubServiceName(String name);
+    Service findServiceBySubServiceName(String name);
 
 }

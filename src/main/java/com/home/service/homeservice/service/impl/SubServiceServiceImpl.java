@@ -1,6 +1,8 @@
 package com.home.service.homeservice.service.impl;
 
 
+import com.home.service.homeservice.exception.IdIsNotExist;
+import com.home.service.homeservice.exception.InvalidServiceNameExctetion;
 import com.home.service.homeservice.service.SubServiceService;
 import com.home.service.homeservice.domain.Service;
 import com.home.service.homeservice.domain.SubService;
@@ -9,9 +11,6 @@ import com.home.service.homeservice.repository.SubServiceRepository;
 
 
 import java.util.List;
-import java.util.Optional;
-
-import static com.home.service.homeservice.validation.EntityValidator.isValid;
 
 @RequiredArgsConstructor
 @org.springframework.stereotype.Service
@@ -21,8 +20,6 @@ public class SubServiceServiceImpl implements SubServiceService {
 
     @Override
     public SubService saveOrUpdate(SubService subService) {
-        if (!isValid(subService))
-            return null;
         return subServiceRepository.save(subService);
     }
 
@@ -38,13 +35,13 @@ public class SubServiceServiceImpl implements SubServiceService {
     }
 
     @Override
-    public Optional<SubService> findById(Long id) {
-        return subServiceRepository.findById(id);
+    public SubService findById(Long id) {
+        return subServiceRepository.findById(id).orElseThrow(()->new IdIsNotExist("the id is not found"));
     }
 
     @Override
-    public Optional<SubService> findByName(String name) {
-        return subServiceRepository.findSubServiceByName(name);
+    public SubService findByName(String name) {
+        return subServiceRepository.findSubServiceByName(name).orElseThrow(()->new InvalidServiceNameExctetion("the sub service name not found"));
     }
 
     @Override
@@ -53,7 +50,7 @@ public class SubServiceServiceImpl implements SubServiceService {
     }
 
     @Override
-    public Optional<Service> findServiceBuSubServiceName(String name) {
-         return subServiceRepository.findServiceBuSubServiceName(name);
+    public Service findServiceBySubServiceName(String name) {
+         return subServiceRepository.findServiceBuSubServiceName(name).orElseThrow(()->new InvalidServiceNameExctetion("the service name not found"));
     }
 }

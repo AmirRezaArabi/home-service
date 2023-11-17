@@ -13,8 +13,8 @@ public interface ServiceService {
     String delete(Service service);
     void deleteById(Long id);
 
-    Optional<Service> findById(Long id);
-    Optional<Service> findByName (String name);
+    Service findById(Long id);
+    Service findByName (String name);
 
 
     List<Service> findAll();

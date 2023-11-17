@@ -2,6 +2,7 @@ package com.home.service.homeservice.service;
 
 import com.home.service.homeservice.domain.CustomerRequest;
 import com.home.service.homeservice.domain.Expert;
+import com.home.service.homeservice.domain.Order;
 import com.home.service.homeservice.domain.Suggestion;
 
 import java.time.LocalDate;
@@ -16,4 +17,9 @@ public interface ExpertAccessService {
 
 
     List<CustomerRequest> showCustomRequest(Long expertId);
+
+    List<Order> findAllByExpertUsername();
+
+
+
 }
