@@ -24,5 +24,14 @@ public class Service {
     private String name ;
     @OneToMany(mappedBy = "service",cascade = CascadeType.ALL)
     private List<SubService> subServices = new ArrayList<>() ;
+
+    @Override
+    public String toString() {
+        return "Service{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", subServices=" + subServices.size() +
+                '}';
+    }
 }
 

@@ -28,4 +28,15 @@ public class SubService {
     private String description;
 
     private Long basePrice;
+
+    @Override
+    public String toString() {
+        return "SubService{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", service=" + service.getName() +
+                ", description='" + description + '\'' +
+                ", basePrice=" + basePrice +
+                '}';
+    }
 }

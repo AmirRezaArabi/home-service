@@ -35,7 +35,20 @@ public class CustomerRequest {
 
     private String address;
     @Enumerated(EnumType.STRING)
-    private REQUEST_STATUS request_status;
+    @Column(name = "status")
+    private REQUEST_STATUS status;
 
-
+    @Override
+    public String toString() {
+        return "CustomerRequest{" +
+                "id=" + id +
+                ", customer=" + customer.getName() +
+                ", subService=" + subService.getName() +
+                ", suggestionPrice=" + suggestionPrice +
+                ", description='" + description + '\'' +
+                ", startDay=" + startDay +
+                ", address='" + address + '\'' +
+                ", status=" + status +
+                '}';
+    }
 }

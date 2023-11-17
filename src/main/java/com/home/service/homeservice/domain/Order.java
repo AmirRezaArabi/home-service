@@ -32,7 +32,8 @@ public class Order {
     @ManyToOne
     private Expert expert;
     @Enumerated(EnumType.STRING)
-    private REQUEST_STATUS request_status;
+    @Column(name = "status")
+    private REQUEST_STATUS status;
     @NotNull
     private Long Price ;
 
@@ -46,7 +47,18 @@ public class Order {
 
     private int score;
 
-
-
-
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", subService=" + subService.getName() +
+                ", request_status=" + status +
+                ", Price=" + Price +
+                ", duration=" + duration +
+                ", description='" + description + '\'' +
+                ", startDay=" + startDay +
+                ", comment='" + comment + '\'' +
+                ", score=" + score +
+                '}';
+    }
 }
