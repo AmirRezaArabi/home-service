@@ -1,4 +1,4 @@
-package com.home.service.homeservice.utility;
+package com.home.service.homeservice.filter;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.home.service.homeservice.utility;
+package com.home.service.homeservice.filter;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,6 +11,6 @@ public class ExpertFilter {
     private  String name ;
     private  String emailAddress;
     private int score;
-    private Boolean maxScore;
-    private Boolean minScore;
+    private int maxScore;
+    private int minScore;
 }
