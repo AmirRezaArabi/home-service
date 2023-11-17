@@ -1,6 +1,7 @@
 package com.home.service.homeservice.utility;
 
 import com.home.service.homeservice.domain.Customer;
+import com.home.service.homeservice.filter.ExpertFilter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -20,4 +21,5 @@ public class CustomerSpec {
     private static Specification<Customer> hasEmail(String emailAddress) {
         return (root, query, cb) -> emailAddress == null ? cb.conjunction() : cb.equal(root.get("emailAddress"), emailAddress);
     }
+
 }

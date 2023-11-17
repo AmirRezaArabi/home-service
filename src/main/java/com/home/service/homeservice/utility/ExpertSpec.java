@@ -1,20 +1,17 @@
 package com.home.service.homeservice.utility;
 
 import com.home.service.homeservice.domain.Expert;
-import jakarta.persistence.criteria.Order;
+import com.home.service.homeservice.filter.ExpertFilter;
 import org.springframework.data.jpa.domain.Specification;
-
-import java.util.List;
 
 public class ExpertSpec {
 
-    private static int score;
 
     public static Specification<Expert> filterBy(ExpertFilter expertFilter) {
         return Specification
                 .where(hasName(expertFilter.getName()))
                 .and(hasEmail(expertFilter.getEmailAddress()))
-                .and(hasScore(expertFilter.getScore()))
+                .and(betweenScores(expertFilter.getMinScore(),expertFilter.getMaxScore()))
                 ;
     }
 
@@ -28,5 +25,15 @@ public class ExpertSpec {
     private static Specification<Expert> hasScore(int score) {
         return (root, query, cb) -> cb.equal(root.get("score"), score);
     }
+
+    private static Specification<Expert> betweenScores(int minScore, int maxScore)
+    {
+        return ((root, query, criteriaBuilder) ->
+                criteriaBuilder.between(root.get("score"),minScore,maxScore));
+    }
+
+
+
+
 }
 
