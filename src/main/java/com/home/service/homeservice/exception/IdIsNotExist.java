@@ -5,4 +5,5 @@ public class IdIsNotExist extends RuntimeException{
     public IdIsNotExist(String message) {
         super(message);
     }
+
 }
