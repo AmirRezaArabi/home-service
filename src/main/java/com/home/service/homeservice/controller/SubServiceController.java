@@ -21,7 +21,7 @@ public class SubServiceController {
     private final ModelMapper modelMapper;
 
     @PostMapping("/add")
-    ResponseEntity<SubServiceResponseDTO> signUp(@RequestBody SubServiceRequestDTO subServiceRequestDTO) {
+    ResponseEntity<SubServiceResponseDTO> addSubService(@RequestBody SubServiceRequestDTO subServiceRequestDTO) {
         SubService subService = adminAccessService.addSubService(subServiceRequestDTO.getServiceName(),
                 subServiceRequestDTO.getName(),
                 subServiceRequestDTO.getDescription(),
@@ -32,14 +32,13 @@ public class SubServiceController {
 
 
     @DeleteMapping("/delete/{id}")
-    ResponseEntity<?> deleteCustomer(@PathVariable Long id) {
-        if (subServiceService.findById(id).isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    ResponseEntity<?> deleteSubService(@PathVariable Long id) {
         subServiceService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/update")
-    ResponseEntity<SubServiceResponseDTO> updateCustomer(@RequestBody SubServiceResponseDTO subServiceResponseDTO) {
+    ResponseEntity<SubServiceResponseDTO> updateSubService(@RequestBody SubServiceResponseDTO subServiceResponseDTO) {
         SubService map = modelMapper.map(subServiceResponseDTO, SubService.class);
         SubService subService = subServiceService.saveOrUpdate(map);
         return new ResponseEntity<>(modelMapper.map(subService, SubServiceResponseDTO.class), HttpStatus.OK);
